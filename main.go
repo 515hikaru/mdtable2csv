@@ -1,13 +1,24 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/csv"
 	"fmt"
+	"os"
 
 	"github.com/gomarkdown/markdown/ast"
 	"github.com/gomarkdown/markdown/parser"
 )
+
+func inputFromStdin() string {
+	var text string
+	scan := bufio.NewScanner(os.Stdin)
+	for scan.Scan() {
+		text += scan.Text() + "\n"
+	}
+	return text
+}
 
 func extractTextFromChildren(node ast.Node) [][]string {
 	var texts [][]string
@@ -59,14 +70,8 @@ func dumpCSV(records [][]string, buf *bytes.Buffer) {
 }
 
 func main() {
-	input := `
-| foo | bar | booo |
-|-----|-----|------|
-| 1   | 3   | 5    |
-| 1   | 9   | 25   |
-`
+	input := inputFromStdin()
 	inputByte := []byte(input)
-
 	parser := parser.New()
 	output := parser.Parse(inputByte)
 	records := extractTextFromTableDocument(output)
