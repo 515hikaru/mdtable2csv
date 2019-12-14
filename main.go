@@ -11,6 +11,8 @@ import (
 	"github.com/gomarkdown/markdown/parser"
 )
 
+const version = "0.0.1"
+
 func inputFromStdin() string {
 	var text string
 	scan := bufio.NewScanner(os.Stdin)
