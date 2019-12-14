@@ -47,7 +47,14 @@ func extractTextFromTableDocument(node ast.Node) [][]string {
 	}
 }
 
+func dumpCSV(records [][]string, buf *bytes.Buffer) {
+
+	w := csv.NewWriter(buf)
+	for _, record := range records {
+		if err := w.Write(record); err != nil {
+			panic("Write Error")
 		}
+		w.Flush()
 	}
 }
 
@@ -64,12 +71,6 @@ func main() {
 	output := parser.Parse(inputByte)
 	records := extractTextFromTableDocument(output)
 	buf := new(bytes.Buffer)
-	w := csv.NewWriter(buf)
-	for _, record := range records {
-		if err := w.Write(record); err != nil {
-			panic("Write Error")
-		}
-		w.Flush()
-	}
+	dumpCSV(records, buf)
 	fmt.Printf(buf.String())
 }
