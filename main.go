@@ -9,35 +9,46 @@ import (
 	"github.com/gomarkdown/markdown/parser"
 )
 
-func getTextRaw(node ast.Node) []string {
+func extractTextFromChildren(node ast.Node) [][]string {
+	var texts [][]string
+	for _, raw := range node.GetChildren() {
+		rawText := extractTextFromTableDocument(raw)
+		for _, text := range rawText {
+			texts = append(texts, text)
+		}
+	}
+	return texts
+}
+
+func extractTextFromTableDocument(node ast.Node) [][]string {
 	switch node := node.(type) {
-	// TODO: Add case for *ast.Table
+	case *ast.Document:
+		return extractTextFromTableDocument(node.GetChildren()[0])
+	case *ast.Table:
+		texts := extractTextFromChildren(node)
+		return texts
 	case *ast.TableHeader:
-		raw := node.GetChildren()[0]
-		return getTextRaw(raw)
+		texts := extractTextFromChildren(node)
+		return texts
 	case *ast.TableBody:
-		raw := node.GetChildren()[0]
-		return getTextRaw(raw)
+		texts := extractTextFromChildren(node)
+		return texts
 	case *ast.TableRow:
+		var row [][]string
 		var ss []string
 		for _, c := range node.GetChildren() {
 			leaf := c.GetChildren()[0].AsLeaf()
 			ss = append(ss, string(leaf.Literal))
 		}
-		return ss
+		row = append(row, ss)
+		return row
 	default:
-		return []string{}
+		return [][]string{}
 	}
 }
 
-func getAllTableCell(node ast.Node) [][]string {
-	var data [][]string
-	for _, child := range node.GetChildren() {
-		for _, c := range child.GetChildren() {
-			data = append(data, getTextRaw(c))
 		}
 	}
-	return data
 }
 
 func main() {
@@ -51,7 +62,7 @@ func main() {
 
 	parser := parser.New()
 	output := parser.Parse(inputByte)
-	records := getAllTableCell(output)
+	records := extractTextFromTableDocument(output)
 	buf := new(bytes.Buffer)
 	w := csv.NewWriter(buf)
 	for _, record := range records {
