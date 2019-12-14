@@ -28,12 +28,14 @@ func getTextRaw(node ast.Node) []string {
 	}
 }
 
-func getAllTableCell(node ast.Node) {
+func getAllTableCell(node ast.Node) [][]string {
+	var data [][]string
 	for _, child := range node.GetChildren() {
 		for _, c := range child.GetChildren() {
-			fmt.Println(getTextRaw(c))
+			data = append(data, getTextRaw(c))
 		}
 	}
+	return data
 }
 
 func main() {
