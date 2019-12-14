@@ -2,6 +2,12 @@
 
 Convert markdown table to csv.
 
+# Installation
+
+```
+$ go get -u github.com/515hikaru/mdtable2csv
+```
+
 # Usage
 
 ```
