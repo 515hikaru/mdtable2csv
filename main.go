@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"encoding/csv"
 	"fmt"
 
 	"github.com/gomarkdown/markdown/ast"
@@ -49,5 +51,14 @@ func main() {
 
 	parser := parser.New()
 	output := parser.Parse(inputByte)
-	getAllTableCell(output)
+	records := getAllTableCell(output)
+	buf := new(bytes.Buffer)
+	w := csv.NewWriter(buf)
+	for _, record := range records {
+		if err := w.Write(record); err != nil {
+			panic("Write Error")
+		}
+		w.Flush()
+	}
+	fmt.Printf(buf.String())
 }
