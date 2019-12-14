@@ -9,6 +9,7 @@ import (
 
 func getTextRaw(node ast.Node) []string {
 	switch node := node.(type) {
+	// TODO: Add case for *ast.Table
 	case *ast.TableHeader:
 		raw := node.GetChildren()[0]
 		return getTextRaw(raw)
