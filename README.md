@@ -27,7 +27,7 @@ $ cat foo.md
 |---|---|---|
 | a | b | c |
 
-$ cat foo.md | ./mdtable2csv
+$ cat foo.md | mdtable2csv
 foo,bar,boo
 a,b,c
 ```
