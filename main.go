@@ -36,7 +36,13 @@ func extractTextFromChildren(node ast.Node) [][]string {
 func extractTextFromTableDocument(node ast.Node) [][]string {
 	switch node := node.(type) {
 	case *ast.Document:
-		return extractTextFromTableDocument(node.GetChildren()[0])
+		// TODO: Deal with multi tables.
+		for _, node := range node.GetChildren() {
+			if val := extractTextFromChildren(node); val != nil {
+				return val
+			}
+		}
+		return nil
 	case *ast.Table:
 		texts := extractTextFromChildren(node)
 		return texts
@@ -56,7 +62,7 @@ func extractTextFromTableDocument(node ast.Node) [][]string {
 		row = append(row, ss)
 		return row
 	default:
-		return [][]string{}
+		return nil
 	}
 }
 
