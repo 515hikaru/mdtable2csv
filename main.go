@@ -11,7 +11,7 @@ import (
 	"github.com/gomarkdown/markdown/parser"
 )
 
-const version = "0.0.1"
+const version = "0.0.1-dev"
 
 func inputFromStdin() string {
 	var text string
