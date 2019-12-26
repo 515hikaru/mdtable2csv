@@ -56,6 +56,10 @@ func extractTextFromTableDocument(node ast.Node) [][]string {
 		var row [][]string
 		var ss []string
 		for _, c := range node.GetChildren() {
+			if len(c.GetChildren()) == 0 {
+				ss = append(ss, "")
+				continue
+			}
 			leaf := c.GetChildren()[0].AsLeaf()
 			ss = append(ss, string(leaf.Literal))
 		}
