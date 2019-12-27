@@ -4,14 +4,33 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/csv"
+	"flag"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/gomarkdown/markdown/ast"
 	"github.com/gomarkdown/markdown/parser"
 )
 
 const version = "0.0.3-dev"
+
+var toCode string
+
+func init() {
+	flag.StringVar(&toCode, "to-code", "UTF-8", "Use to-encoding for output characters.")
+}
+
+func validateToCode(toCode string) bool {
+	codes := []string{"UTF-8", "UTF-8-BOM"}
+	for _, code := range codes {
+		if strings.ToUpper(toCode) == code {
+			return true
+		}
+	}
+
+	return false
+}
 
 func inputFromStdin() string {
 	var text string
@@ -82,12 +101,20 @@ func dumpCSV(records [][]string, buf *bytes.Buffer) {
 }
 
 func main() {
+	flag.Parse()
+	if !validateToCode(toCode) {
+		fmt.Printf("%s is an unsupported character code.\n", toCode)
+		os.Exit(1)
+	}
 	input := inputFromStdin()
 	inputByte := []byte(input)
 	parser := parser.New()
 	output := parser.Parse(inputByte)
 	records := extractTextFromTableDocument(output)
 	buf := new(bytes.Buffer)
+	if strings.ToUpper(toCode) == "UTF-8-BOM" {
+		buf.Write([]byte{0xEF, 0xBB, 0xBF})
+	}
 	dumpCSV(records, buf)
 	fmt.Printf(buf.String())
 }
