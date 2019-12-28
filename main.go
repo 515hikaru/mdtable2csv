@@ -16,14 +16,18 @@ import (
 
 const version = "0.1.1-dev"
 
-var toCode string
-var inFile string
-var outFile string
+var (
+	toCode      string
+	inFile      string
+	outFile     string
+	showVersion bool
+)
 
 func init() {
 	flag.StringVar(&toCode, "to-code", "UTF-8", "Use to-encoding for output characters.")
 	flag.StringVar(&inFile, "if", "", "read from FILE instead of stdin")
 	flag.StringVar(&outFile, "of", "", "write to FILE instead of stdout")
+	flag.BoolVar(&showVersion, "version", false, "Show version")
 }
 
 func validateToCode(toCode string) bool {
@@ -115,6 +119,10 @@ func dumpCSV(records [][]string, buf *bytes.Buffer) {
 
 func main() {
 	flag.Parse()
+	if showVersion {
+		fmt.Printf("%s\n", version)
+		os.Exit(0)
+	}
 	if !validateToCode(toCode) {
 		fmt.Printf("%s is an unsupported character code.\n", toCode)
 		os.Exit(1)
