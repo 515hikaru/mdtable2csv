@@ -2,6 +2,10 @@
 
 Convert markdown table to csv.
 
+## Screen shot
+
+![](https://cdn-ak.f.st-hatena.com/images/fotolife/h/hikaru515/20191228/20191228175525.gif)
+
 # Installation
 
 ```
