@@ -25,8 +25,8 @@ var (
 
 func init() {
 	flag.StringVar(&toCode, "to-code", "UTF-8", "Use to-encoding for output characters.")
-	flag.StringVar(&inFile, "if", "", "read from FILE instead of stdin")
-	flag.StringVar(&outFile, "of", "", "write to FILE instead of stdout")
+	flag.StringVar(&inFile, "if", "", "Read from file instead of stdin")
+	flag.StringVar(&outFile, "of", "", "Write to file instead of stdout")
 	flag.BoolVar(&showVersion, "version", false, "Show version")
 }
 
