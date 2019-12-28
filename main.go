@@ -6,6 +6,7 @@ import (
 	"encoding/csv"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strings"
 
@@ -16,9 +17,13 @@ import (
 const version = "0.0.3-dev"
 
 var toCode string
+var inFile string
+var outFile string
 
 func init() {
 	flag.StringVar(&toCode, "to-code", "UTF-8", "Use to-encoding for output characters.")
+	flag.StringVar(&inFile, "if", "", "read from FILE instead of stdin")
+	flag.StringVar(&outFile, "of", "", "write to FILE instead of stdout")
 }
 
 func validateToCode(toCode string) bool {
@@ -39,6 +44,14 @@ func inputFromStdin() string {
 		text += scan.Text() + "\n"
 	}
 	return text
+}
+
+func inputFromFile(filePath string) (string, error) {
+	content, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return "", err
+	}
+	return string(content), nil
 }
 
 func extractTextFromChildren(node ast.Node) [][]string {
@@ -106,7 +119,18 @@ func main() {
 		fmt.Printf("%s is an unsupported character code.\n", toCode)
 		os.Exit(1)
 	}
-	input := inputFromStdin()
+	var input string
+	if inFile != "" {
+		var err error
+		input, err = inputFromFile(inFile)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%v\n", err)
+			os.Exit(1)
+		}
+	} else {
+		input = inputFromStdin()
+
+	}
 	inputByte := []byte(input)
 	parser := parser.New()
 	output := parser.Parse(inputByte)
@@ -116,5 +140,19 @@ func main() {
 		buf.Write([]byte{0xEF, 0xBB, 0xBF})
 	}
 	dumpCSV(records, buf)
-	fmt.Printf(buf.String())
+	if outFile == "" {
+		fmt.Printf(buf.String())
+	} else {
+		file, err := os.Create(outFile)
+		defer file.Close()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%v\n", err)
+			os.Exit(1)
+		}
+		_, err = file.Write(buf.Bytes())
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%v\n", err)
+			os.Exit(1)
+		}
+	}
 }
