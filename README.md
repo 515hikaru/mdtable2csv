@@ -1,3 +1,6 @@
+![Go](https://github.com/515hikaru/mdtable2csv/workflows/Go/badge.svg)
+![release](https://github.com/515hikaru/mdtable2csv/workflows/release/badge.svg)
+
 # mdtable2csv
 
 Convert markdown table to csv.
