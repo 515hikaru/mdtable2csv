@@ -11,6 +11,14 @@ Convert markdown table to csv.
 
 # Installation
 
+If you use Homebrew, run following:
+
+```
+$ brew install 515hikaru/tap/mdtable2csv
+```
+
+Or `go get`:
+
 ```
 $ go get -u github.com/515hikaru/mdtable2csv
 ```
