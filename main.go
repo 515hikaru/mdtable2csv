@@ -149,7 +149,7 @@ func main() {
 	}
 	dumpCSV(records, buf)
 	if outFile == "" {
-		fmt.Printf(buf.String())
+		buf.WriteTo(os.Stdout)
 	} else {
 		file, err := os.Create(outFile)
 		if err != nil {
@@ -157,7 +157,7 @@ func main() {
 			os.Exit(1)
 		}
 		defer file.Close()
-		_, err = file.Write(buf.Bytes())
+		_, err = buf.WriteTo(file)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "%v\n", err)
 			os.Exit(1)
