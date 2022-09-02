@@ -152,11 +152,11 @@ func main() {
 		fmt.Printf(buf.String())
 	} else {
 		file, err := os.Create(outFile)
-		defer file.Close()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "%v\n", err)
 			os.Exit(1)
 		}
+		defer file.Close()
 		_, err = file.Write(buf.Bytes())
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "%v\n", err)
