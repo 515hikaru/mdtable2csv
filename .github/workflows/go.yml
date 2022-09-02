@@ -24,10 +24,10 @@ jobs:
         with:
           go-version: ${{ matrix.go }}
 
-    - name: Get dependencies
-      run: |
-        go install
-    - name: Build
-      run: go build -v .
-    - name: Test
-      run: go test -v .
+      - name: Get dependencies
+        run: |
+          go install
+      - name: Build
+        run: go build -v .
+      - name: Test
+        run: go test -v .
