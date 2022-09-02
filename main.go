@@ -14,7 +14,7 @@ import (
 	"github.com/gomarkdown/markdown/parser"
 )
 
-const version = "v1.0.0"
+const version = "v1.0.1"
 
 var (
 	toCode      string
