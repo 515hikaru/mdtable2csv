@@ -16,7 +16,7 @@ jobs:
         os: [ubuntu-latest, macOS-latest, windows-latest]
         go: [ '1.17', '1.18' ]
     runs-on: ${{ matrix.os }}
-    name: Go ${{ matrix.go }} build / test
+    name: ${{ matrix.os }} Go ${{ matrix.go }} build / test
     steps:
       - uses: actions/checkout@v3
       - name: Setup go
