@@ -14,6 +14,7 @@ Convert markdown table to csv.
 If you use Homebrew, run following:
 
 ```
+$ brew tap 515hikaru/tap
 $ brew install 515hikaru/tap/mdtable2csv
 ```
 
