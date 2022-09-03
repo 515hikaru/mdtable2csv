@@ -48,6 +48,8 @@ foo,bar,boo
 a,b,c
 ```
 
+See `mdtable2csv -help` for more details.
+
 # LICENSE
 
 MIT
