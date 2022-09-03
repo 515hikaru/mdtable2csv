@@ -3,15 +3,15 @@
 
 # mdtable2csv
 
-Convert markdown table to csv.
+Convert the markdown table to CSV.
 
-## Screen shot
+## Screenshot
 
 ![](https://cdn-ak.f.st-hatena.com/images/fotolife/h/hikaru515/20191228/20191228175525.gif)
 
 # Installation
 
-If you use Homebrew, run following:
+If you use Homebrew, run the following:
 
 ```
 $ brew tap 515hikaru/tap
